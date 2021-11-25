@@ -1,0 +1,268 @@
+@charset "utf-8";
+
+/*유틸리티*/
+/* img-replace */
+
+/* [CSS] IR(Image Replacement) 기법
+웹 접근성 준수를 위해 이미지 사용 시 대체 텍스트를 제공해야 한다.
+단순히 스크린 리더 사용자뿐 아니라 검색 엔진의 효과적인 내용 수집을 위해서도 필수적이다. */
+/* H5BP(HTML5 Boilerplate)나 부트스트랩에서 사용중인 최신 방법이다. */
+
+:root {
+  --color-red: #b91646;
+  --color-grey: #dfd8ca;
+  --color-beige: #fbf3e4;
+  --color-green: #105652;
+}
+/*
+red : 
+gery : 
+beige : 
+green : 
+*/
+
+.ir {
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -9999px;
+  line-height: 0;
+  font-size: 1px;
+  color: transparent;
+}
+
+body {
+  background-color: var(--color-beige);
+}
+
+#app {
+  display: flex;
+  flex-wrap: wrap; /*여러 줄 불가*/
+  justify-content: center;
+  align-items: flex-start;
+  /* 교차축에서의 위치. flex-start는 교차축이 시작하는 위치를 뜻함.
+    기본값은 stretch. 쭉 늘어나지 않게 하기 위해서 flex-start를 사용*/
+  gap: 0 28px;
+  padding-top: 248px;
+}
+/* section */
+#app .vending-machine,
+#app .my-info {
+  width: 360px;
+  background: var(--color-grey);
+  box-sizing: border-box;
+}
+
+#app .tit-app {
+  top: 0;
+  width: 100%;
+  max-width: 386px; /* max를 넣으면 화면이 늘어나던 상관없이 본래크기 유지*/
+  height: 180px;
+  /* 반복 없음, 중앙 정렬 / x축 100%, y축 100% */
+  background: no-repeat center / 100% 100% url(/bending/src/img/Logo_img.png);
+}
+/*
+max-width 설정 시에 화면 크기보다 width값이 커지면 좌우로 넘어가는 스크롤이 생기지 않는다.
+동일한 상황에서 width값을 설정하면 좌우로 넘어가는 스크롤이 생긴다.
+
+그 상태에서 요소를 중앙에두는 background center를 해보자. 
+width는 정해진 크기 700px에서 center를 유지하며 창 크기가 변화해도 가운데에서 700px의 크기를 벗어나지 않는다
+
+max-width를 적용하려면 항상 width가 100% 여야한다.
+max-width를 적용하면 700px이상 부터는 무조건 700px의 크기를 적용하고 값이 줄어둘 경우 값이 깨진다
+그러면 min-width를 적용하면? width100%에 의해서 화면값이 100%차지하고 있다가 700px이하가 될 경우 더이상 깨지지 않는다.
+
+그러면 여기서 386px를 넣어준 이유는 무엇일까? 
+모바일 웹 기준 386px이 가장 적은 사이즈의 범위다.
+386보다 작지 않은 이상 최대 크기는 386을 유지한다는 의미이다.
+
+min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하겠다는 뜻이다.
+*/
+#app .vending-machine {
+  position: relative;
+  padding: 31px 27px 28px;
+}
+
+.vending-machine .list-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.vending-machine .list-item li {
+  position: relative;
+  /*나머지 10%는 space-between에 의해서 계산됨*/
+  width: 30%;
+  height: 130px;
+  border-radius: 10px;
+  /* x좌표, y좌표, blue 범위 */
+  /* box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5); 세번째 값은 블러 처리만 4px */
+}
+
+/* 처음에는 .vending-machine .list-item li:active:before{ */
+/* 나중에는 .vending-machine .list-item li.on:before{ */
+
+/* content:'' : 가상선택자에 필수로 들어가는 요소. 작음따음표'' 안에는 텍스트 내용을 넣고, 없으면 작은따음표만 넣기
+가상선택자는 부피가 없으므로, 아이콘을 표현할 땐 꼭 너비와 높이를 정해주어야 한다. transform을 쓸 때는 블럭요소(display:block 또는 display:inline-block)가 되어야 적용가능하다. */
+/* :active 는 클릭했을 때의 변화*/
+
+.vending-machine .list-item li:active:before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: 3px solid #000;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.vending-machine .list-item li.sold-out::before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 5px;
+  background: no-repeat center/58px 46px url(/bending/src/img/Sold-out.svg)
+    rgba(0, 0, 0, 0.8);
+}
+.vending-machine .list-item li.sold-out {
+  pointer-events: none;
+}
+
+.vending-machine .list-item li:nth-child(3) ~ li {
+  margin-top: 12px;
+}
+
+/*버튼 영역 100퍼센트로 만들기*/
+.vending-machine .btn-item {
+  display: block;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+.vending-machine .list-item .img-item {
+  width: 36px;
+  height: 65px;
+  margin: 0 auto; /*요소 중앙 정렬*/
+}
+
+.vending-machine .tit-item {
+  display: block;
+  font-size: 9px;
+  margin-bottom: 7px;
+}
+.vending-machine .txt-price {
+  display: inline-block;
+  font-size: 12px;
+  padding: 5px 15px;
+  background-color: var(--color-green);
+  border-radius: 50px;
+  color: #fff;
+  vertical-align: 8px;
+}
+
+.vending-machine .cont-return,
+.vending-machine .cont-put,
+.vending-machine .cont-get {
+  display: flex;
+  justify-content: space-between;
+  line-height: 25px;
+  margin-top: 12px;
+}
+/* 거스름돈 반환 버튼, 입금 버튼, 획득 버튼 */
+.cont-return .btn-return,
+.cont-put .btn-put,
+.cont-get .btn-get {
+  width: 30%;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 5px;
+  background-color: var(--color-red);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5); /* 세번째 값은 블러 처리만 */
+}
+
+.cont-return .info-balance {
+  width: 65%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 5px;
+  background-color: var(--color-beige);
+}
+.cont-put .inp-put {
+  width: 65%;
+  line-height: 19px;
+  border: 1px solid var(--color-green);
+  border-radius: 5px;
+}
+
+.cont-get .list-item-staged {
+  width: 65%;
+  height: 106px;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: var(--color-beige);
+  overflow-y: scroll;
+}
+.list-item-staged li {
+  display: flex;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 5px;
+}
+/*
+인접 형제 선택자
+li 뒤에 있는 li를 선택한다.
+ */
+.list-item-staged li + li {
+  margin-top: 6px;
+}
+.list-item-staged .btn-staged {
+  width: 100%;
+}
+
+.list-item-staged .img-item,
+.list-item-staged .txt-item {
+  float: left;
+}
+.list-item-staged .img-item {
+  width: 18px;
+  height: 33px;
+}
+.list-item-staged .txt-item {
+  margin-left: 10px;
+  line-height: 33px;
+  font-size: 9px;
+}
+
+.list-item-staged .num-counter {
+  display: flex;
+  float: right;
+  width: 30px;
+  height: 33px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.my-info .cont-mymoney{}
+.cont-mymoney .info-mymoney{}
+.cont-mymoney .txt-mymoney{}
+
+.my-info .cont-myitems{}
+.cont-myitems .list-item-staged{}
+.list-item-staged li{}
+.cont-myitems .txt-total{}

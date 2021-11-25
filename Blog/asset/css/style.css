@@ -1,6 +1,7 @@
 /* 레이아웃 */
 body{
-    background: url(asset/img/header_bg.jpg) repeat-x center top;}
+    background: url(../img/header_bg.jpg) repeat-x center top;}
+    /*..asstimg/header_bg.jpg*/
 #nav{
     background-color: #f6fdff;
 }
@@ -356,7 +357,7 @@ header .header_icon li a:hover{
     padding-top: 5px;
 }
 .blog2 .img-retina{
-background-image: url(asset/img/blog4_@1.jpg);
+background-image: url(../img/blog4_@1.jpg);
 background-size: cover;
 }
 
@@ -395,12 +396,12 @@ background-image: url(/img/blog4_@1.jpg);
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
     only screen and (min-device-pixel-ratio: 2),
     only screen and (min-resolution: 2dppx) {
-    .blog2 .img-retina {background-image: url(/asset/img/blog4_@2.jpg);}
+    .blog2 .img-retina {background-image: url(../img/blog2_@2.jpg);}
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 3),
     only screen and (min-device-pixel-ratio: 3),
     only screen and (min-resolution: 3dppx) {
-    .blog2 .img-retina {background-image: url(/asset/img/blog4_@3.jpg);}
+    .blog2 .img-retina {background-image: url(../img/blog4_@3.jpg);}
 }
 
 /* 이미지 슬라이드 */ 
