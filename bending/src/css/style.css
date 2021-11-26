@@ -3,32 +3,27 @@
 /*유틸리티*/
 /* img-replace */
 
-/* [CSS] IR(Image Replacement) 기법
-웹 접근성 준수를 위해 이미지 사용 시 대체 텍스트를 제공해야 한다.
-단순히 스크린 리더 사용자뿐 아니라 검색 엔진의 효과적인 내용 수집을 위해서도 필수적이다. */
-/* H5BP(HTML5 Boilerplate)나 부트스트랩에서 사용중인 최신 방법이다. */
-
 :root {
   --color-red: #b91646;
   --color-grey: #dfd8ca;
   --color-beige: #fbf3e4;
   --color-green: #105652;
 }
-/*
-red : 
-gery : 
-beige : 
-green : 
-*/
 
 .ir {
-  display: block;
-  overflow: hidden;
+  /* 레이아웃에 영향을 끼치지 않도록 */
   position: absolute;
-  text-indent: -9999px;
-  line-height: 0;
-  font-size: 1px;
-  color: transparent;
+  /* 스크린 리더가 읽을 수 있도록 */
+  width: 1px;
+  height: 1px;
+  /* 눈에 보이는 부분을 제거 */
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  overflow: hidden;
+}
+
+.img-item{
+  display: block;
 }
 
 body {
@@ -54,9 +49,10 @@ body {
 }
 
 #app .tit-app {
+  position: absolute;
   top: 0;
   width: 100%;
-  max-width: 386px; /* max를 넣으면 화면이 늘어나던 상관없이 본래크기 유지*/
+  max-width: 360px; /* max를 넣으면 화면이 늘어나던 상관없이 본래크기 유지*/
   height: 180px;
   /* 반복 없음, 중앙 정렬 / x축 100%, y축 100% */
   background: no-repeat center / 100% 100% url(/bending/src/img/Logo_img.png);
@@ -95,7 +91,7 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
   /*나머지 10%는 space-between에 의해서 계산됨*/
   width: 30%;
   height: 130px;
-  border-radius: 10px;
+  border-radius: 5px;
   /* x좌표, y좌표, blue 범위 */
   /* box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5); 세번째 값은 블러 처리만 4px */
 }
@@ -106,6 +102,19 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
 /* content:'' : 가상선택자에 필수로 들어가는 요소. 작음따음표'' 안에는 텍스트 내용을 넣고, 없으면 작은따음표만 넣기
 가상선택자는 부피가 없으므로, 아이콘을 표현할 땐 꼭 너비와 높이를 정해주어야 한다. transform을 쓸 때는 블럭요소(display:block 또는 display:inline-block)가 되어야 적용가능하다. */
 /* :active 는 클릭했을 때의 변화*/
+
+.vending-machine .list-item li.on:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: 3px solid var(--color-red);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
 
 .vending-machine .list-item li:active:before {
   display: block;
@@ -137,29 +146,39 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
   pointer-events: none;
 }
 
+/*일반 형제 선택자 ~ */
 .vending-machine .list-item li:nth-child(3) ~ li {
   margin-top: 12px;
 }
 
 /*버튼 영역 100퍼센트로 만들기*/
+/*맙소사 버튼은 inline 요소였어.*/
 .vending-machine .btn-item {
   display: block;
   border-radius: 5px;
   width: 100%;
   height: 100%;
 }
-
+/* 버튼 안에 있는 이미지 */
+/*
+요소 중앙 정렬을 위해서 margin: 0 auto 
+이미지 또한 블록요소로 바꿔줘야지 width, height값이 적용 가능합니다.
+*/
 .vending-machine .list-item .img-item {
   width: 36px;
   height: 65px;
-  margin: 0 auto; /*요소 중앙 정렬*/
+  margin: 0 auto;
+  margin-top: 10px;
 }
-
 .vending-machine .tit-item {
   display: block;
   font-size: 9px;
-  margin-bottom: 7px;
+  margin: 3px auto;
 }
+/*
+블락요소를 준 뒤에 background 컬러를 주면 한줄 전체 색상 적용
+inline-block 요소를 준 뒤에 background 컬러를 주면 인라인 요소만큼만 background 컬러 적용
+  */
 .vending-machine .txt-price {
   display: inline-block;
   font-size: 12px;
@@ -167,7 +186,6 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
   background-color: var(--color-green);
   border-radius: 50px;
   color: #fff;
-  vertical-align: 8px;
 }
 
 .vending-machine .cont-return,
@@ -175,7 +193,7 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
 .vending-machine .cont-get {
   display: flex;
   justify-content: space-between;
-  line-height: 25px;
+  line-height: 10px;
   margin-top: 12px;
 }
 /* 거스름돈 반환 버튼, 입금 버튼, 획득 버튼 */
@@ -184,42 +202,40 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
 .cont-get .btn-get {
   width: 30%;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   border-radius: 5px;
   background-color: var(--color-red);
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5); /* 세번째 값은 블러 처리만 */
 }
 
-.cont-return .info-balance {
+.cont-return .info-balance,
+.cont-put .inp-put,
+.cont-get .list-item-staged{
   width: 65%;
-  box-sizing: border-box;
+  border-radius: 5px;
+  border: 2px solid var(--color-green);
+}
+.cont-return .info-balance,
+.cont-put .inp-put{
+  line-height: 20px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.cont-return .info-balance {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
-  border-radius: 5px;
   background-color: var(--color-beige);
-}
-.cont-put .inp-put {
-  width: 65%;
-  line-height: 19px;
-  border: 1px solid var(--color-green);
-  border-radius: 5px;
 }
 
-.cont-get .list-item-staged {
-  width: 65%;
+.list-item-staged {
   height: 106px;
   padding: 12px;
-  border-radius: 5px;
-  background-color: var(--color-beige);
   overflow-y: scroll;
 }
 .list-item-staged li {
-  display: flex;
-  overflow: hidden;
-  padding: 8px;
   border-radius: 5px;
 }
 /*
@@ -227,10 +243,14 @@ min-width: 386px를 적용하면 386보다 작아질 경우 386px을 고집하�
 li 뒤에 있는 li를 선택한다.
  */
 .list-item-staged li + li {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 .list-item-staged .btn-staged {
   width: 100%;
+  display: block;
+  overflow:hidden;
+  padding: 8px;
+  border-radius: 5px;
 }
 
 .list-item-staged .img-item,
@@ -248,21 +268,82 @@ li 뒤에 있는 li를 선택한다.
 }
 
 .list-item-staged .num-counter {
-  display: flex;
-  float: right;
   width: 30px;
   height: 33px;
-  border: 1px solid #000;
-  border-radius: 5px;
+  float: right;
+  display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 700;
+  background-color: var(--color-green);
+  border-radius: 5px;
 }
 
-.my-info .cont-mymoney{}
-.cont-mymoney .info-mymoney{}
-.cont-mymoney .txt-mymoney{}
+#app .my-info{
+  padding: 0 27px;
+}
 
-.my-info .cont-myitems{}
-.cont-myitems .list-item-staged{}
-.list-item-staged li{}
-.cont-myitems .txt-total{}
+.my-info .cont-mymoney {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 9px 27px
+}
+.cont-mymoney .txt-mymoney {
+  font-weight: 700;
+}
+
+.my-info .cont-myitems {
+  margin-top: 20px;
+  background: var(--color-grey);
+  border-radius: 5px;
+}
+/* 획득한 음료*/
+.cont-myitems .tit-myitem{
+  display: block;
+  text-align: center;
+  margin-bottom: 13px;
+  font-size: 14px;
+  font-weight: 700;
+
+}
+.cont-myitems .list-item-staged {
+  border-radius: 5px;
+  border: 2px solid var(--color-green);
+}
+/* 총 금액 */
+.cont-myitems .txt-total {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700px;
+}
+
+@media only screen /* only : 전체 쿼리가 일치할 때만 적용, screen: 코드가 적용될 미디어 유형 */
+  and (min-device-width: 320px) /*기기의 넓이가 320 이상*/
+  and (max-device-width: 480px) /*기기의 넓이가 420 이하*/
+  and (-webkit-min-device-pixel-ratio: 2) { /* 최소 1px 당 2개의 화소 */
+    body{
+        background-color: #fff;
+    }
+    #app{
+        padding-top:163px; /*480픽셀 이하로 되니깐 변함*/
+    }
+    .my-info .cont-myitems{
+        margin-top:0; /*480픽셀 이하로 되니깐 변함*/
+        padding: 31px 27px 32px; /*480픽셀 이하로 되니깐 변함*/
+    }
+}
+
+/* 320px이상 480px이하부터 아래와 같은 querry를 적용하겠다는 의미이다. */
+
+/*
+
+min + 숫자 : 숫자 이상시에 적용
+max + 숫자 : 숫자 이하시에 적용
+
+*/
