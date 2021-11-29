@@ -1,0 +1,140 @@
+#app {
+  .vending-machine {
+    position: relative;
+    padding: 31px 27px 28px;
+    .list-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-content: space-between;
+      li {
+        position: relative;
+        width: 30%;
+        height: 130px;
+        border-radius: 5px;
+        /* content:'' : 가상선택자에 필수로 들어가는 요소. 작음따음표'' 안에는 텍스트 내용을 넣고, 없으면 작은따음표만 넣기
+                가상선택자는 부피가 없으므로, 아이콘을 표현할 땐 꼭 너비와 높이를 정해주어야 한다. transform을 쓸 때는 블럭요소(display:block 또는 display:inline-block)가 되어야 적용가능하다. */
+        /* :active 는 클릭했을 때의 변화*/
+        &.on::before {
+          @extend %base-absolute-block;
+          border: 3px solid $main-red;
+          border-radius: 5px;
+          box-sizing: border-box;
+        }
+        &:active::before {
+          @extend %base-absolute-block;
+          border: 3px solid #000;
+          border-radius: 5px;
+          box-sizing: border-box;
+        }
+        &.sold-out::before {
+          @extend %base-absolute-block;
+          z-index: 1;
+          border-radius: 5px;
+          background: no-repeat center/58px 46px
+            url(/bending/src/img/Sold-out.svg) rgba(0, 0, 0, 0.8);
+        }
+        &.sold-out {
+          pointer-events: none;
+        }
+        &:nth-child(3) ~ li {
+          margin-top: 12px;
+        }
+        .btn-item {
+          /*버튼 영역 100퍼센트로 만들기*/
+          /*맙소사 버튼은 inline 요소였어.*/
+          display: block;
+          border-radius: 5px;
+          width: 100%;
+          height: 100%;
+          .img-item {
+            /* 버튼 안에 있는 이미지 */
+            /* 요소 중앙 정렬을 위해서 margin: 0 auto 
+                    이미지 또한 블록요소로 바꿔줘야지 width, height값이 적용 가능합니다.*/
+            width: 36px;
+            height: 65px;
+            margin: 0 auto;
+            margin-top: 10px;
+          }
+          .tit-item {
+            display: block;
+            font-size: 9px;
+            margin: 3px auto;
+          }
+          .txt-price {
+            display: inline-block;
+            font-size: 12px;
+            padding: 5px 15px;
+            background-color: $main-green;
+            border-radius: 50px;
+            color: #fff;
+            /*
+                    블락요소를 준 뒤에 background 컬러를 주면 한줄 전체 색상 적용
+                    inline-block 요소를 준 뒤에 background 컬러를 주면 인라인 요소만큼만 background 컬러 적용
+                      */
+          }
+        }
+      }
+    }
+    .cont-return {
+      @extend %cont-layout;
+      .info-balance {
+        @extend %cont-left-return;
+        line-height: 20px;
+        padding: 0 10px;
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: $main-beige;
+      }
+      .btn-return {
+        @extend %cont-right-btn;
+      }
+    }
+    .cont-put {
+      @extend %cont-layout;
+      .inp-put {
+        @extend %cont-left-return;
+        line-height: 20px;
+        padding: 0 10px;
+        font-size: 13px;
+      }
+      .btn-put {
+        @extend %cont-right-btn;
+      }
+    }
+    .cont-get {
+      @extend %cont-layout;
+
+      .list-item-staged {
+        @extend %cont-left-return;
+        height: 106px;
+        padding: 12px;
+        overflow-y: scroll;
+        li {
+          @extend %li;
+          .btn-staged {
+            @extend %li-btn;
+
+            .img-item {
+              @extend %li-btn-img;
+            }
+            .txt-item {
+              @extend %li-btn-txt;
+            }
+            .num-counter {
+              @extend %li-btn-num;
+            }
+          }
+          & + li {
+            margin-top: 8px;
+          }
+        }
+      }
+      .btn-get {
+        @extend %cont-right-btn;
+      }
+    }
+  }
+}

@@ -20,6 +20,10 @@
   overflow: hidden;
 }
 
+.img-item {
+  display: block;
+}
+
 html,
 body,
 div,
