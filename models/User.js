@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema({
     type: String,
     minlength: 5,
   },
+  lastname: {
+    type: String,
+    maxlength: 50,
+  },
   role: {
     //유저가 관리자가 될 수 있고 일반 유저가 될 수 있다.
     type: Number,
